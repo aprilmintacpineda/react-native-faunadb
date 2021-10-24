@@ -10,6 +10,8 @@ FaunaDB is a very powerful database-as-a-service that offers functionalities tha
 
 ## Compelling reasons to have a backend
 
+This are some reasons you might want to have a lambda function (or cloudflare worder or whatever you want) on the side.
+
 - **EMAILS**, when needing to do things like veriying user's email address or sending a forgot password code.
 - **Notifications**, when you want to send some kind of notification (or a combination of such) like Push notification and WebSocket.
 
