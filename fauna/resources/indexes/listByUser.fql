@@ -1,0 +1,7 @@
+CreateIndex({
+  name: "listByUser",
+  source: Collection("List"),
+  terms: [
+    { field: ["data", "user"] }
+  ]
+})

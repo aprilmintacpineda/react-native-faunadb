@@ -1,0 +1,76 @@
+CreateRole({
+  name: "TodoRules",
+  membership: {
+    resource: Collection("User")
+  },
+  privileges: [
+    {
+      resource: Function("TodosByList"),
+      actions: {
+        call: true
+      }
+    },
+    {
+      resource: Collection("Todo"),
+      actions: {
+        read: Query(
+          Lambda(
+            "ref",
+            Equals(
+              CurrentIdentity(),
+              Select(
+                ['data', 'user'],
+                Get(Var("ref"))
+              )
+            )
+          )
+        ),
+        create: Query(
+          Lambda(
+            "data",
+            Equals(
+              CurrentIdentity(),
+              Select(
+                ['data', 'user'],
+                Var("data")
+              )
+            )
+          )
+        ),
+        write: Query(
+          Lambda(
+            ["oldData", "newData"],
+            And(
+              Equals(
+                CurrentIdentity(),
+                Select(
+                  ["data", "user"],
+                  Var('oldData')
+                )
+              ),
+              Equals(
+                CurrentIdentity(),
+                Select(
+                  ["data", "user"],
+                  Var('newData')
+                )
+              )
+            )
+          )
+        ),
+        delete: Query(
+          Lambda(
+            "ref",
+            Equals(
+              CurrentIdentity(),
+              Select(
+                ["data", "user"],
+                Get(Var("ref"))
+              )
+            )
+          )
+        )
+      }
+    }
+  ]
+})

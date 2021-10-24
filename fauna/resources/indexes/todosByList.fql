@@ -1,0 +1,8 @@
+CreateIndex({
+  name: "todosByList",
+  source: Collection("Todo"),
+  terms: [
+    { field: ["data", "list"] },
+    { field: ["data", "user"] }
+  ]
+})

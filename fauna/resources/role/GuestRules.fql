@@ -1,0 +1,14 @@
+CreateRole({
+  name: "GuestRules",
+  membership: {
+    resource: Collection("User")
+  },
+  privileges: [
+    {
+      resource: Function("Login"),
+      actions: {
+        call: true
+      }
+    }
+  ]
+})

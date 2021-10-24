@@ -1,0 +1,26 @@
+CreateRole({
+  name: "UserRules",
+  membership: {
+    resource: Collection("User")
+  },
+  privileges: [
+    {
+      resource: Collection("User"),
+      actions: {
+        read: Query(Lambda("ref", Equals(CurrentIdentity(), Var("ref"))))
+      }
+    },
+    {
+      resource: Function("Logout"),
+      actions: {
+        call: true
+      }
+    },
+    {
+      resource: Function("GetUserData"),
+      actions: {
+        call: true
+      }
+    }
+  ]
+})

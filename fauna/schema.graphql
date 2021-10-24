@@ -1,0 +1,41 @@
+type User {
+  email: String! @unique
+  name: String!
+  list: [List] @relation
+  todos: [Todo] @relation
+}
+
+type Todo {
+  title: String!
+  completed: Boolean!
+  list: List
+  user: User!
+}
+
+type List {
+  title: String!
+  todos: [Todo] @relation
+  user: User!
+}
+
+type Logout {
+  result: Boolean
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  logout: Boolean! @resolver(name: "Logout")
+  login(data: LoginInput!): String! @resolver(name: "Login")
+}
+
+type Query {
+  allTodos: [Todo!]
+  allLists: [List!]
+  listByUser: [List!] @resolver(name: "ListByUser", paginated: true)
+  todosByList(listId: ID!): [Todo!] @resolver(name: "TodosByList", paginated: true)
+  getUserData: User! @resolver(name: "GetUserData")
+}

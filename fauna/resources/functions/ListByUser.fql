@@ -1,0 +1,20 @@
+Update(Function("ListByUser"), {
+  role: "admin",
+  body: Query(
+    Lambda(
+      ["size", "afterCursor", "beforeCursor"],
+      Map(
+        Paginate(
+          Match(
+            Index('listByUser'),
+            CurrentIdentity()
+          )
+        ),
+        Lambda(
+          "ref",
+          Get(Var("ref"))
+        )
+      )
+    )
+  )
+});

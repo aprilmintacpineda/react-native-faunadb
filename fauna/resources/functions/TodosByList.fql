@@ -1,0 +1,21 @@
+Update(Function("TodosByList"), {
+  role: "admin",
+  body: Query(
+    Lambda(
+      ["listId", "size", "afterCursor", "beforeCursor"],
+      Map(
+        Paginate(
+          Match(
+            Index('todosByList'),
+            Ref(Collection("List"), Var("listId")),
+            CurrentIdentity()
+          )
+        ),
+        Lambda(
+          "ref",
+          Get(Var("ref"))
+        )
+      )
+    )
+  )
+});

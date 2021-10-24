@@ -1,0 +1,9 @@
+Update(Function("GetUserData"), {
+  role: "admin",
+  body: Query(
+    Lambda(
+      [],
+      Get(CurrentIdentity())
+    )
+  )
+});

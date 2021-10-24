@@ -1,0 +1,13 @@
+Update(Function("Logout"), {
+  name: "Logout",
+  role: "admin",
+  body: Query(
+    Lambda(
+      "",
+      Do(
+        Logout(true),
+        true
+      )
+    )
+  )
+});

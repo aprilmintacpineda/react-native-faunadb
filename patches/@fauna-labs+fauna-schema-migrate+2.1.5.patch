@@ -1,0 +1,13 @@
+diff --git a/node_modules/@fauna-labs/fauna-schema-migrate/dist/migrations/plan.js b/node_modules/@fauna-labs/fauna-schema-migrate/dist/migrations/plan.js
+index 5f9adb7..c844b5c 100644
+--- a/node_modules/@fauna-labs/fauna-schema-migrate/dist/migrations/plan.js
++++ b/node_modules/@fauna-labs/fauna-schema-migrate/dist/migrations/plan.js
+@@ -83,7 +83,7 @@ var planMigrations = function (atChildDbPath, extraDbExpr) {
+                         resources[e.type].push(e);
+                     });
+                     // IGNORE for now, illegal references is not something that can easily be verified.
+-                    findIllegalReferences(resources);
++                    // findIllegalReferences(resources);
+                     return [4 /*yield*/, from_migration_files_1.getLastMigrationSnippets(atChildDbPath)
+                         // Resources determine how your current data looks.
+                         // Migraitons are generated from resources.
