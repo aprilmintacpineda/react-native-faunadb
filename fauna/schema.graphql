@@ -18,10 +18,6 @@ type List {
   user: User!
 }
 
-type Logout {
-  result: Boolean
-}
-
 type Query {
   allTodos: [Todo!]
   allLists: [List!]
