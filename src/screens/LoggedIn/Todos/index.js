@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -18,11 +18,13 @@ const query = gql`
   }
 `;
 
-const refreshOn = ['CreatedTodo'];
-
-function Todos ({ navigation, route: { params: list } }) {
+function Todos ({
+  navigation: { setOptions },
+  route: { params: list }
+}) {
   React.useEffect(() => {
-    navigation.setOptions({
+    setOptions({
+      title: list.title,
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
@@ -33,7 +35,7 @@ function Todos ({ navigation, route: { params: list } }) {
         </TouchableOpacity>
       )
     });
-  }, [navigation, list]);
+  }, [setOptions, list]);
 
   const renderItem = React.useCallback(
     ({ item }) => <Row item={item} />,
@@ -45,8 +47,6 @@ function Todos ({ navigation, route: { params: list } }) {
       emptyMessage="There are no todos in this list yet."
       query={query}
       renderItem={renderItem}
-      refreshOn={refreshOn}
-      updateMutationName="updateTodo"
       variables={{
         listId: list._id
       }}

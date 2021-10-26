@@ -1,8 +1,7 @@
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client';
 import React from 'react';
 import { Text, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import useMutation from 'hooks/useMutation';
 
 const mutation = gql`
   mutation updateTodo($id: ID!, $data: TodoInput!) {
@@ -15,17 +14,20 @@ const mutation = gql`
 `;
 
 function TodoRow ({ item }) {
-  const { isLoading, mutate } = useMutation({ mutation });
-
-  const markAsComplete = React.useCallback(() => {
-    mutate({
+  const [mutate, { loading }] = useMutation(mutation, {
+    refetchQueries: ['todosByList'],
+    variables: {
       id: item._id,
       data: {
         title: item.title,
         completed: !item.completed
       }
-    });
-  }, [mutate, item]);
+    }
+  });
+
+  const markAsComplete = React.useCallback(() => {
+    mutate();
+  }, [mutate]);
 
   return (
     <View
@@ -41,7 +43,7 @@ function TodoRow ({ item }) {
         disableBuiltInState
         onPress={markAsComplete}
         useNativeDriver
-        disabled={isLoading}
+        disabled={loading}
       />
       <Text>{item.title}</Text>
     </View>

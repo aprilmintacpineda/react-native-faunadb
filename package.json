@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android-dev": "cd android && ./gradlew clean && cd .. && react-native run-android",
     "ios": "react-native run-ios",
     "start": "yarn copy-fonts && react-native start",
     "test": "jest",
@@ -13,12 +13,12 @@
     "copy-fonts": "rm -rf ios/client_only_app/Fonts && mkdir ios/client_only_app/Fonts && node scripts/copyFonts.js"
   },
   "dependencies": {
+    "@apollo/client": "^3.4.16",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "faunadb": "^4.4.1",
     "fluxible-js": "^5.0.14",
     "graphql": "^15.6.1",
-    "graphql-tag": "^2.12.5",
     "react": "17.0.2",
     "react-fluxible": "^5.0.4",
     "react-native": "0.66.1",

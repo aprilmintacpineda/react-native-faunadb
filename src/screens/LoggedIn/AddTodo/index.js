@@ -1,5 +1,5 @@
+import { gql } from '@apollo/client';
 import { emitEvent, store } from 'fluxible-js';
-import gql from 'graphql-tag';
 import React from 'react';
 import FormBody from './FormBody';
 import { navigationRef } from 'App';
@@ -40,7 +40,8 @@ const formOptions = {
         connect: store.user._id
       }
     };
-  }
+  },
+  refetchQueries: ['todosByList']
 };
 
 function AddTodo () {

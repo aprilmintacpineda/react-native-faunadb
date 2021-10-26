@@ -1,6 +1,6 @@
 import React from 'react';
+import { apolloClient } from 'App';
 import useState from 'hooks/useState';
-import { graphqlMutation } from 'libs/graphql';
 
 export const FormContext = React.createContext();
 
@@ -12,7 +12,8 @@ function Form ({
     mutation = null,
     onSuccess = null,
     onFailed = null,
-    modifyInput = null
+    modifyInput = null,
+    refetchQueries = null
   },
   children
 }) {
@@ -94,10 +95,17 @@ function Form ({
           ? modifyInput(formValues)
           : formValues;
 
-        data = await graphqlMutation({
+        const result = await apolloClient.mutate({
           mutation,
-          variables: { data: input }
+          variables: { data: input },
+          refetchQueries
         });
+
+        const mutationName =
+          mutation.definitions[0].selectionSet.selections[0].name
+            .value;
+
+        data = result.data[mutationName];
       }
 
       updateState({
@@ -120,7 +128,8 @@ function Form ({
     mutation,
     onSuccess,
     modifyInput,
-    onFailed
+    onFailed,
+    refetchQueries
   ]);
 
   return (

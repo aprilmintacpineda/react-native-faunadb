@@ -22,20 +22,12 @@ type Logout {
   result: Boolean
 }
 
-input LoginInput {
-  email: String!
-  password: String!
-}
-
-type Mutation {
-  logout: Boolean! @resolver(name: "Logout")
-  login(data: LoginInput!): String! @resolver(name: "Login")
-}
-
 type Query {
   allTodos: [Todo!]
   allLists: [List!]
   listByUser: [List!] @resolver(name: "ListByUser", paginated: true)
   todosByList(listId: ID!): [Todo!] @resolver(name: "TodosByList", paginated: true)
+  logout: Boolean! @resolver(name: "Logout")
+  login(email: String!, password: String!): String! @resolver(name: "Login")
   getUserData: User! @resolver(name: "GetUserData")
 }

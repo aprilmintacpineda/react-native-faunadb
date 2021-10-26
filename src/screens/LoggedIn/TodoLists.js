@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,8 +16,6 @@ const query = gql`
     }
   }
 `;
-
-const refreshOn = ['CreatedList'];
 
 function TodoLists ({ navigation }) {
   React.useEffect(() => {
@@ -54,7 +52,6 @@ function TodoLists ({ navigation }) {
       emptyMessage="You have no list yet."
       query={query}
       renderItem={renderItem}
-      refreshOn={refreshOn}
     />
   );
 }

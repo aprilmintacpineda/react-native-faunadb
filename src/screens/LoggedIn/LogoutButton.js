@@ -1,40 +1,37 @@
+import { gql, useLazyQuery } from '@apollo/client';
 import { StackActions } from '@react-navigation/native';
 import { updateStore } from 'fluxible-js';
-import gql from 'graphql-tag';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { navigationRef } from 'App';
-import useMutation from 'hooks/useMutation';
 
-const mutation = gql`
-  mutation {
+const query = gql`
+  query logout {
     logout
   }
 `;
 
-function LogoutButton () {
-  const { mutate, isSuccess, isLoading } = useMutation({
-    mutation
+function loggedOut () {
+  updateStore({
+    token: null,
+    user: null
   });
 
-  React.useEffect(() => {
-    if (!isSuccess) return;
+  navigationRef.current.dispatch(StackActions.replace('Guest'));
+}
 
-    updateStore({
-      token: null,
-      user: null
-    });
+function LogoutButton () {
+  const [logout, { loading }] = useLazyQuery(query, {
+    onCompleted: loggedOut
+  });
 
-    navigationRef.current.dispatch(StackActions.replace('Guest'));
-  }, [isSuccess]);
-
-  const logout = React.useCallback(() => {
-    mutate();
-  }, [mutate]);
+  const onPress = React.useCallback(() => {
+    logout();
+  }, [logout]);
 
   return (
-    <TouchableOpacity onPress={logout} disabled={isLoading}>
+    <TouchableOpacity onPress={onPress} disabled={loading}>
       <Ionicons name="ios-exit-outline" size={20} />
     </TouchableOpacity>
   );

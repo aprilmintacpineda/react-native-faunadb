@@ -1,4 +1,4 @@
-import { addEvent, addEvents } from 'fluxible-js';
+import { useQuery } from '@apollo/client';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -8,7 +8,6 @@ import {
   View
 } from 'react-native';
 import Divider from './Divider';
-import useQuery from 'hooks/useQuery';
 
 function keyExtractor (item) {
   return item._id;
@@ -18,40 +17,20 @@ function DataFlatList ({
   emptyMessage,
   query,
   renderItem,
-  refreshOn = null,
-  updateMutationName = null,
   variables = null
 }) {
-  const { isInitial, isRefreshing, refreshData, data, updateState } =
-    useQuery({
-      query,
-      variables
-    });
+  const { data, refetch, loading } = useQuery(query, {
+    variables
+  });
 
-  React.useEffect(() => {
-    if (!refreshOn) return;
-    return addEvents(refreshOn, refreshData);
-  }, [refreshOn, refreshData]);
+  const queryName =
+    query.definitions[0].selectionSet.selections[0].name.value;
 
-  React.useEffect(() => {
-    if (!updateMutationName) return;
+  const onRefresh = React.useCallback(() => {
+    refetch();
+  }, [refetch]);
 
-    return addEvent(updateMutationName, newDocument => {
-      updateState(({ data }) => ({
-        data: data.map(oldDocument => {
-          if (oldDocument._id !== newDocument._id)
-            return oldDocument;
-
-          return {
-            ...oldDocument,
-            ...newDocument
-          };
-        })
-      }));
-    });
-  }, [updateMutationName, updateState]);
-
-  if (isInitial) {
+  if (loading) {
     return (
       <View
         style={{
@@ -68,12 +47,9 @@ function DataFlatList ({
   return (
     <FlatList
       refreshControl={
-        <RefreshControl
-          refreshing={isRefreshing}
-          onRefresh={refreshData}
-        />
+        <RefreshControl refreshing={false} onRefresh={onRefresh} />
       }
-      data={data}
+      data={data[queryName].data}
       renderItem={renderItem}
       ItemSeparatorComponent={Divider}
       keyExtractor={keyExtractor}

@@ -1,5 +1,5 @@
-import { emitEvent, store } from 'fluxible-js';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+import { store } from 'fluxible-js';
 import React from 'react';
 import FormBody from './FormBody';
 import { navigationRef } from 'App';
@@ -22,7 +22,6 @@ const formOptions = {
     }
   `,
   onSuccess: () => {
-    emitEvent('CreatedList');
     navigationRef.current.goBack();
   },
   modifyInput: input => {
@@ -32,7 +31,8 @@ const formOptions = {
         connect: store.user._id
       }
     };
-  }
+  },
+  refetchQueries: ['listByUser']
 };
 
 function AddTodoList () {
