@@ -1,4 +1,4 @@
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { StackActions } from '@react-navigation/native';
 import { updateStore } from 'fluxible-js';
 import React from 'react';
@@ -6,8 +6,8 @@ import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { navigationRef } from 'App';
 
-const query = gql`
-  query logout {
+const mutation = gql`
+  mutation logout {
     logout
   }
 `;
@@ -22,13 +22,13 @@ function loggedOut () {
 }
 
 function LogoutButton () {
-  const [logout, { loading }] = useLazyQuery(query, {
+  const [mutate, { loading }] = useMutation(mutation, {
     onCompleted: loggedOut
   });
 
   const onPress = React.useCallback(() => {
-    logout();
-  }, [logout]);
+    mutate();
+  }, [mutate]);
 
   return (
     <TouchableOpacity onPress={onPress} disabled={loading}>

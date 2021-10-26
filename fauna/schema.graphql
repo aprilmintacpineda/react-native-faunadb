@@ -18,12 +18,20 @@ type List {
   user: User!
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  login(data: LoginInput!): String! @resolver(name: "Login")
+  logout: Boolean! @resolver(name: "Logout")
+}
+
 type Query {
   allTodos: [Todo!]
   allLists: [List!]
   listByUser: [List!] @resolver(name: "ListByUser", paginated: true)
   todosByList(listId: ID!): [Todo!] @resolver(name: "TodosByList", paginated: true)
-  logout: Boolean! @resolver(name: "Logout")
-  login(email: String!, password: String!): String! @resolver(name: "Login")
   getUserData: User! @resolver(name: "GetUserData")
 }

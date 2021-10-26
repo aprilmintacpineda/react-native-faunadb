@@ -2,16 +2,16 @@ Update(Function("Login"), {
   role: "admin",
   body: Query(
     Lambda(
-      ["email", "password"],
+      ["data"],
       Select(
         ['secret'],
         Login(
           Match(
             Index("unique_User_email"),
-            Var("email")
+            Select(["email"], Var("data"))
           ),
           {
-            password: Var("password")
+            password: Select(["password"], Var("data"))
           }
         )
       )
