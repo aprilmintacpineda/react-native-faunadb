@@ -4,7 +4,7 @@ import { updateStore } from 'fluxible-js';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { navigationRef } from 'App';
+import { apolloClient, navigationRef } from 'App';
 
 const mutation = gql`
   mutation logout {
@@ -17,6 +17,8 @@ function loggedOut () {
     token: null,
     user: null
   });
+
+  apolloClient.clearStore();
 
   navigationRef.current.dispatch(StackActions.replace('Guest'));
 }
